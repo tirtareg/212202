@@ -1,6 +1,6 @@
 # Lulusan
 
-Rekapitulasi lulusan Universitas Sultan Ageng Tirtayasa jenjang Diploma, Sarjana, dan Pascasarjana sampai dengan Agustus 2021 (*sumber: Lampiran SK Lulusan per Agustus 2021*).
+Rekapitulasi lulusan Universitas Sultan Ageng Tirtayasa jenjang Diploma, Sarjana, dan Pascasarjana sampai dengan Desember 2021 (*sumber: Lampiran SK Lulusan per Desember 2021*).
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(janitor)
@@ -14,13 +14,13 @@ kable(lulusan, row.names = F) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
                 latex_options = "scale_down") %>%
   add_header_above(c(" " = 2, "Tahun Kelulusan" = 6, " " = 1)) %>%
-  pack_rows("Pascasarjana", 1, 10, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Hukum", 11, 11, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Keguruan dan Ilmu Pendidikan", 12, 33, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Teknik", 34, 41, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Pertanian", 42, 44, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Ekonomi dan Bisnis", 45, 52, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Ilmu Sosial dan Ilmu Politik", 53, 55, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Kedokteran", 56, 59, label_row_css = "background-color: #666; color: #fff;")
+  pack_rows("Pascasarjana", 1, 11, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Hukum", 12, 12, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Keguruan dan Ilmu Pendidikan", 13, 34, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Teknik", 35, 42, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Pertanian", 43, 45, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Ekonomi dan Bisnis", 46, 53, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Ilmu Sosial dan Ilmu Politik", 54, 56, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Kedokteran", 57, 60, label_row_css = "background-color: #666; color: #fff;")
 
 ```
