@@ -1,5 +1,5 @@
 ---
-title: 'Untirta dalam Angka: semester ganjil TA 2021/2022'
+title: 'Untirta dalam Angka: semester genap TA 2021/2022'
 author: "oleh Subbagian Registrasi dan Statistik"
 date: "`r Sys.Date()`"
 output:
