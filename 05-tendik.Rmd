@@ -10,8 +10,10 @@ library(plotly, warn.conflicts = F)
 library(tidyverse)
 library(shiny)
 library(readxl)
-tk_pns <- read_excel("G:/My Drive/# REGISTRASI DAN STATISTIK/Website/202101/202101/static/SDM_tendik_pns.xlsx")
-tk_non_pns <- read_excel("G:/My Drive/# REGISTRASI DAN STATISTIK/Website/202101/202101/static/SDM_tendik_non_pns.xlsx")
+library(janitor)
+library(kableExtra)
+tk_pns <- read_excel("G:/My Drive/# REGISTRASI DAN STATISTIK/Website/212202/static/SDM_tendik_pns.xlsx")
+tk_non_pns <- read_excel("G:/My Drive/# REGISTRASI DAN STATISTIK/Website/212202/static/SDM_tendik_non_pns.xlsx")
 
 ```
 
@@ -28,9 +30,11 @@ div(plot_ly(type = "pie", labels = data$JK, values = data$banyak,
         insidetextorientation = "radial"), align = "center")
 ```
 
-> Sebaran tendik PNS Universitas Sultan Ageng Tirtayasa berdasarkan jenis kelamin di setiap Unit Kerja
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+# > Sebaran tendik PNS Universitas Sultan Ageng Tirtayasa berdasarkan jenis kelamin di setiap Unit Kerja
+
 library(janitor, warn.conflicts = F)
 library(kableExtra, warn.conflicts = F)
 data <- tk_pns %>%
@@ -64,9 +68,33 @@ div(plot_ly(type = "pie", labels = data$PENDIDIKAN, values = data$banyak,
         insidetextorientation = "radial"), align = "center")
 ```
 
-> Sebaran tendik PNS Universitas Sultan Ageng Tirtayasa berdasarkan tingkat pendidikan di setiap Unit Kerja.
+> Sebaran tendik PNS Universitas Sultan Ageng Tirtayasa berdasarkan tingkat pendidikan dan jenis kelamin.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, out.width="60%"}
+data <- tk_pns %>%
+  group_by(PENDIDIKAN, JK) %>%
+  summarize(banyak = n(), .groups = "drop") %>%
+  pivot_wider(names_from = JK, values_from = banyak)
+data$PENDIDIKAN <- c("S2", "S1", "Diploma", "SLTA", "SLTP", "SD")
+names(data) <- c("Pendidikan", "Laki-Laki", "Perempuan")
+
+data[is.na(data)] <- 0
+
+data <- adorn_totals(data, where = c("row", "col"), name = "Jumlah")
+
+kable(data) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F,
+                latex_options = "scale_down") %>%
+  add_header_above(c(" " = 1, "Jenis Kelamin" = 2, " " = 1))
+
+
+```
+
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+
+# > Sebaran tendik PNS Universitas Sultan Ageng Tirtayasa berdasarkan tingkat pendidikan di setiap Unit Kerja.
+
 data <- tk_pns %>%
   group_by(FAKULTAS, PRODI, PENDIDIKAN) %>%
   summarize(Total = n()) %>%
@@ -102,12 +130,15 @@ div(plot_ly(data, x = ~Golongan, y = ~`total`, type = 'bar', name = "") %>%
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 data <- tk_pns %>%
   group_by(GOL, JK) %>%
-  summarize(Total = n()) %>%
+  summarize(Total = n(), .groups = "drop") %>%
   arrange(GOL)
-names(data) <- c("Golongan", "JK", "Total")
+
 data <- data %>%
   pivot_wider(names_from = JK, values_from = Total)
 data[is.na(data)] <- 0
+
+names(data) <- c("Golongan", "Laki-Laki", "Perempuan")
+
 data <- adorn_totals(data, where = c("col", "row"), name = "Jumlah")
 kable(data) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
@@ -115,9 +146,12 @@ kable(data) %>%
   add_header_above(c(" " = 1, "Jenis Kelamin" = 2, " " = 1))
 ```
 
-> Sebaran tendik PNS Universitas Sultan Ageng Tirtayasa berdasarkan jabatan dan jenis kelamin.
 
-```{r, echo=FALSE, out.width="60%", fig.align='center'}
+
+```{r eval=FALSE, fig.align='center', include=FALSE, out.width="60%"}
+
+# > Sebaran tendik PNS Universitas Sultan Ageng Tirtayasa berdasarkan jabatan dan jenis kelamin.
+
 data <- tk_pns %>%
   group_by(JABATAN, JK) %>%
   summarize(total = n(), .groups = "drop") 
