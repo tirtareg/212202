@@ -10,21 +10,42 @@ library(janitor)
 library(kableExtra)
 library(readxl)
 sdm <- NULL
-data <- read_excel("G:/My Drive/# REGISTRASI DAN STATISTIK/Website/212201/static/SDM_dosen_pns.xlsx")
+
+data <- read.csv("G:/My Drive/# REGISTRASI DAN STATISTIK/DATA PEGAWAI/DOSEN PNS/Update/update_dos_pns.csv")
+data <- data[, c(5, 8)]
+data$status <- "Dosen PNS"
+names(data) <- c("pendidikan", "jk", "status")
+
 sdm <- rbind(sdm, data)
-data <- read_excel("G:/My Drive/# REGISTRASI DAN STATISTIK/Website/212201/static/SDM_dosen_non_pns.xlsx")
+
+data <- read.csv("G:/My Drive/# REGISTRASI DAN STATISTIK/DATA PEGAWAI/DOSEN PNS/Update/update_dos_non_pns.csv")
+data <- data[, c(5, 11)]
+data$status <- "Dosen Non PNS"
+names(data) <- c("pendidikan", "jk", "status")
+
 sdm <- rbind(sdm, data)
-data <- read_excel("G:/My Drive/# REGISTRASI DAN STATISTIK/Website/212201/static/SDM_tendik_non_pns.xlsx")
+
+data <- read_excel("G:/My Drive/# REGISTRASI DAN STATISTIK/Website/212202/static/SDM_tendik_non_pns.xlsx")
+data <- data[, c(5, 3)]
+data$status <- "Tendik Non PNS"
+names(data) <- c("pendidikan", "jk", "status")
+
 sdm <- rbind(sdm, data)
+
 data <- read_excel("G:/My Drive/# REGISTRASI DAN STATISTIK/Website/212201/static/SDM_tendik_pns.xlsx")
+data <- data[, c(5, 3)]
+data$status <- "Tendik PNS"
+names(data) <- c("pendidikan", "jk", "status")
+
+
 sdm <- rbind(sdm, data)
 
 
-sdm$STATUS <- factor(sdm$STATUS, levels = c("Dosen PNS", "Dosen non PNS", "Tendik PNS", "Tendik non PNS"))
+sdm$status <- factor(sdm$status, levels = c("Dosen PNS", "Dosen Non PNS", "Tendik PNS", "Tendik Non PNS"))
 
 data <- sdm %>%
-  group_by(JK) %>%
-  summarize(banyak = n())
+  group_by(jk) %>%
+  summarize(banyak = n(), .groups = "drop")
 data$JK <- c("Laki-Laki", "Perempuan")
 
 div(plot_ly(type = "pie", labels = data$JK, values = data$banyak,
@@ -32,12 +53,12 @@ div(plot_ly(type = "pie", labels = data$JK, values = data$banyak,
         insidetextorientation = "radial"), align = "center")
 
 data <- sdm %>%
-  group_by(STATUS, JK) %>%
-  summarize(total = n())
+  group_by(status, jk) %>%
+  summarize(total = n(), .groups = "drop")
 data <- data %>%
-  pivot_wider(names_from = JK, values_from = total)
+  pivot_wider(names_from = jk, values_from = total)
+
 names(data) <- c("SDM", "Laki-Laki", "Perempuan")
-data$SDM <- c("Dosen PNS", "Dosen non PNS", "Tendik PNS", "Tendik non PNS")
 
 data$SDM <- factor(data$SDM, levels = data[["SDM"]])
 
@@ -49,14 +70,26 @@ div(plot_ly(data, x = ~SDM, y = ~`Laki-Laki`, type = 'bar', name = "Laki-Laki") 
 > Sebaran SDM berdasarkan tingkat pendidikan
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+sdm[sdm=="S2"] <- "2_S2"
+sdm[sdm=="S3"] <- "1_S3"
+sdm[sdm=="Sp"] <- "3_Spesialis"
+sdm[sdm=="S1 Profesi"] <- "4_S1 Profesi"
+
 data <- sdm %>%
-  group_by(PENDIDIKAN, STATUS) %>%
-  summarize(total = n())
+  group_by(pendidikan, status) %>%
+  summarize(total = n(), .groups = "drop")
 data <- data %>%
-  pivot_wider(names_from = STATUS, values_from = total)
+  pivot_wider(names_from = status, values_from = total)
+
 data[is.na(data)] <- 0
-data$PENDIDIKAN <- c("S3", "S2", "Spesialis", "S1 Profesi", "S1",
+
+data <- arrange(data, pendidikan)
+
+data$pendidikan <- c("S3", "S2", "Spesialis", "S1 Profesi", "S1",
                    "Diploma", "SLTA", "SLTP", "SD")
+names(data)[1] <- "Pendidikan"
+
 data <- adorn_totals(data, where = c("row", "col"), name = "Jumlah")
 kable(data) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
@@ -64,9 +97,12 @@ kable(data) %>%
   add_header_above(c(" " = 1, "SDM" = 4, " " = 1))
 ```
 
-> Sebaran SDM di setiap Unit Kerja
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+
+# > Sebaran SDM di setiap Unit Kerja
+
 data <- sdm %>%
   group_by(FAKULTAS, STATUS) %>%
   summarize(total = n())
