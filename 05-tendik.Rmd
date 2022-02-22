@@ -200,9 +200,12 @@ div(plot_ly(type = "pie", labels = data$JK, values = data$banyak,
         insidetextorientation = "radial"), align = "center")
 ```
 
-> Sebaran tendik non PNS Universitas Sultan Ageng Tirtayasa berdasarkan jenis kelamin di setiap Unit Kerja
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+
+# > Sebaran tendik non PNS Universitas Sultan Ageng Tirtayasa berdasarkan jenis kelamin di setiap Unit Kerja
+
 data <- tk_non_pns %>%
   group_by(FAKULTAS, PRODI, JK) %>%
   summarize(Total = n())
@@ -231,10 +234,33 @@ div(plot_ly(type = "pie", labels = data$PENDIDIKAN, values = data$banyak,
         insidetextorientation = "radial"), align = "center")
 ```
 
+> Sebaran tendik non PNS Universitas Sultan Ageng Tirtayasa berdasarkan tingkat pendidikan dan jenis kelamin.
 
-> Sebaran tendik non PNS Universitas Sultan Ageng Tirtayasa berdasarkan jabatan dan jenis kelamin.
+```{r, echo=FALSE, out.width="60%"}
+data <- tk_non_pns %>%
+  group_by(PENDIDIKAN, JK) %>%
+  summarize(banyak = n(), .groups = "drop") %>%
+  pivot_wider(names_from = JK, values_from = banyak)
 
-```{r, echo=FALSE, out.width="60%", fig.align='center'}
+data$PENDIDIKAN <- c("S2", "S1", "Diploma", "SLTA", "SLTP", "SD")
+names(data) <- c("Pendidikan", "Laki-Laki", "Perempuan")
+
+data <- adorn_totals(data, where = c("row", "col"), name = "Jumlah")
+
+kable(data) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F,
+                latex_options = "scale_down") %>%
+  add_header_above(c(" " = 1, "Jenis Kelamin" = 2, " " = 1))
+
+
+```
+
+
+
+```{r eval=FALSE, fig.align='center', include=FALSE, out.width="60%"}
+
+# > Sebaran tendik non PNS Universitas Sultan Ageng Tirtayasa berdasarkan jabatan dan jenis kelamin.
+
 data <- tk_non_pns %>%
   group_by(JABATAN, JK) %>%
   summarize(total = n(), .groups = "drop") 
@@ -254,9 +280,12 @@ kable(data) %>%
   add_header_above(c(" " = 1, "Jenis Kelamin" = 2, " " = 1))
 ```
 
-> Sebaran tendik non PNS Universitas Sultan Ageng Tirtayasa berdasarkan jabatan di setiap Unit Kerja
 
-```{r, echo=FALSE, message=FALSE, warning=TRUE}
+
+```{r eval=FALSE, message=FALSE, warning=TRUE, include=FALSE}
+
+# > Sebaran tendik non PNS Universitas Sultan Ageng Tirtayasa berdasarkan jabatan di setiap Unit Kerja
+
 data <- tk_non_pns %>%
   group_by(FAKULTAS, FAK, JABATAN) %>%
   summarize(Total = n()) %>%
@@ -278,8 +307,9 @@ kable(data) %>%
 Berikut adalah daftar nama Tenaga Kependidikan non PNS di Universitas Sultan Ageng Tirtayasa.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-data <- tk_non_pns[,c(2, 3, 4, 7, 11)]
-names(data) <- c("Nama", "JK", "Pendidikan", "Jabatan", "Unit Kerja")
+
+data <- tk_non_pns[,c(2, 3, 4, 7)]
+names(data) <- c("Nama", "JK", "Pendidikan", "Jabatan")
 #kable(dosen1, longtable = T) %>%
 #  kable_styling(bootstrap_options = "striped", full_width = F,
 #                latex_options = c("scale_down", "repeat_header"))
