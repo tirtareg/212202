@@ -263,12 +263,12 @@ Mahasiswa tidak aktif adalah mahasiswa yang tidak melakukan registrasi dan pengi
 data <- read_excel("static/cuti.xlsx")
 data[is.na(data)] <- 0
 data$Fakultas <- c("Hukum", "FKIP", "Teknik", "Pertanian", "FEB", "FISIP", "Pascasarjana", "Kedokteran")
-names(data) <- c("Fakultas", "2016", "2017", "2018", "2019", "2020")
+names(data) <- c("Fakultas", "2016", "2017", "2018", "2019", "2020", "2021")
 data <- adorn_totals(data, where = c("row", "col"), name = "Jumlah")
 kable(data) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
                 latex_options = "scale_down") %>%
-  add_header_above(c(" " = 1, "Angkatan" = 5, " " = 1))
+  add_header_above(c(" " = 1, "Angkatan" = 6, " " = 1))
 ```
 
 > Berikut ini adalah rekapitulasi mahasiswa dicutikan pada semester `r sem` Tahun Akademik `r ta`
@@ -276,7 +276,7 @@ kable(data) %>%
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 cutikan <- read_excel("static/dicutikan.xlsx")
 cutikan[is.na(cutikan)] <- 0
-names(cutikan) <- c("Fakultas", "2015", "2016", "2017", "2018", "2019", "2020")
+names(cutikan) <- c("Fakultas", "2016", "2017", "2018", "2019", "2020", "2021")
 cutikan <- adorn_totals(cutikan, where = c("row", "col"), name = "Jumlah")
 kable(cutikan) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
