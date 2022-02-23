@@ -173,6 +173,8 @@ kable(pend) %>%
 
 ## Mahasiswa Aktif
 
+Mahasiswa Aktif adalah mahasiswa yang terdaftar pada semester tertentu sehingga berhak mengikuti kegiatan akademik serta mendapatkan layanan administratif dan akademik
+
 > Mahasiswa aktif di semester `r sem` Tahun Akademik `r ta` di setiap jenjang studi
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
