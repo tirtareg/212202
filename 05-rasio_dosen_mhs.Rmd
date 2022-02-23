@@ -15,13 +15,13 @@ names(dos_non) <- c("Fakultas", "Prodi")
 
 
 dosen <- rbind.data.frame(dos_pns, dos_non)
-dosen$Prodi <- toupper(dosen$Prodi)
+#dosen$Prodi <- toupper(dosen$Prodi)
 dosen <- dosen %>%
   group_by(Fakultas, Prodi) %>%
   summarise(n = n(), .groups = "drop")
 
-dosen[dosen == "PENDIDIKAN ANAK USIA DINI"] <- "PENDIDIKAN GURU PENDIDIKAN ANAK USIA DINI"
-dosen[dosen == "PENDIDIKAN GURU SD"] <- "PENDIDIKAN GURU SEKOLAH DASAR"
+#dosen[dosen == "PENDIDIKAN ANAK USIA DINI"] <- "PENDIDIKAN GURU PENDIDIKAN ANAK USIA DINI"
+#dosen[dosen == "PENDIDIKAN GURU SD"] <- "PENDIDIKAN GURU SEKOLAH DASAR"
 
 aktif <- read_excel("static/aktif.xlsx")
 aktif <- aktif[, c(3, 5, 6)]
